@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>倒水挑战 · 隐数版 | 凌柃</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1a6d7a 0%, #0e4b55 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Roboto', 'Poppins', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .game-container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(245, 245, 235, 0.96);
+            border-radius: 60px 60px 48px 48px;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,255,0.6);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .game-header {
+            background: #2c3e2f;
+            padding: 20px 20px 16px;
+            text-align: center;
+            color: #f9e7c2;
+            border-bottom: 4px solid #e0a82b;
+        }
+
+        .game-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 #1e3b2a;
+        }
+
+        .sub {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 6px;
+        }
+
+        .cup-visual {
+            background: #b4c8b0;
+            margin: 25px 20px 10px 20px;
+            border-radius: 0 0 40px 40px;
+            box-shadow: inset 0 0 0 3px #eedd99, 0 8px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cup-shape {
+            background: #e0e7d6;
+            height: 220px;
+            border-radius: 0 0 35px 35px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 5px 8px rgba(0,0,0,0.1);
+        }
+
+        .water-fill {
+            background: linear-gradient(135deg, #3ba0d9, #1c6ea9);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            transition: height 0.2s ease-out;
+            height: 0%;
+            border-radius: 0 0 30px 30px;
+            box-shadow: inset 0 5px 6px rgba(255,255,240,0.4), 0 -2px 3px rgba(0,0,0,0.1);
+        }
+
+        .water-fill::after {
+            content: "💧";
+            position: absolute;
+            right: 12px;
+            top: -20px;
+            font-size: 28px;
+            opacity: 0.5;
+            animation: float 2s infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); opacity: 0.5; }
+            100% { transform: translateY(-8px); opacity: 0.8; }
+        }
+
+        .status-area {
+            background: #fef0cf;
+            margin: 15px 20px 0px 20px;
+            border-radius: 48px;
+            padding: 14px 18px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #9b4b2c;
+            box-shadow: inset 0 0 0 2px #fff7e5, 0 4px 10px rgba(0,0,0,0.1);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .status-message {
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .warning-text {
+            color: #d35400;
+            font-weight: 800;
+            text-shadow: 0 0 2px #ffb347;
+        }
+
+        .danger-text {
+            color: #a5260c;
+            background: #ffe0b5;
+            padding: 5px 12px;
+            border-radius: 40px;
+        }
+
+        .input-area {
+            margin: 20px 20px 12px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .input-group input {
+            flex: 3;
+            padding: 14px 18px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 60px;
+            background: #fff8e7;
+            font-weight: bold;
+            text-align: center;
+            font-family: monospace;
+            box-shadow: inset 0 2px 5px #00000022, 0 1px 0 #fff9;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            background: #fffff2;
+            transform: scale(0.98);
+        }
+
+        .input-group button {
+            flex: 1;
+            background: #2c7a47;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.05s linear;
+            box-shadow: 0 4px 0 #14532d;
+        }
+
+        .input-group button:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #14532d;
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            background: #3b5e6b;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            border-radius: 40px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .quick-btn:active {
+            transform: scale(0.96);
+        }
+
+        .dev-panel {
+            background: #1e2a2f;
+            margin: 10px 20px 20px 20px;
+            border-radius: 32px;
+            overflow: hidden;
+            display: none;
+            border-left: 6px solid #ffb347;
+        }
+
+        .dev-title {
+            background: #00000066;
+            padding: 8px 16px;
+            font-weight: bold;
+            color: #ffd966;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .dev-content {
+            background: #222b2e;
+            padding: 12px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #d6f0ff;
+            max-height: 180px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 12px;
+            color: #1f2f28;
+            background: #e5dbbd;
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <div class="game-header">
+        <h1>💧 倒水挑战 · 隐数版 💧</h1>
+        <div class="sub">⚡ 不知容量·凭感觉倒水 ⚡</div>
+    </div>
+
+    <div class="cup-visual">
+        <div class="cup-shape">
+            <div class="water-fill" id="waterFill"></div>
+        </div>
+    </div>
+
+    <div class="status-area" id="statusArea">
+        <div class="status-message" id="statusMsg">✨ 游戏已开始 ✨<br>用小水杯 (1~50) 倒水，溢出即败</div>
+    </div>
+
+    <div class="input-area">
+        <div class="input-group">
+            <input type="number" id="cmdInput" placeholder="输入 1~50 倒水 / 开发者代码 (101,102,103,111,222)" value="">
+            <button id="submitBtn">⏎ 执行</button>
+        </div>
+        <div class="quick-buttons">
+            <button class="quick-btn" data-code="101">📊 101</button>
+            <button class="quick-btn" data-code="111">💧 111</button>
+            <button class="quick-btn" data-code="103">🔄 103</button>
+            <button class="quick-btn" data-code="102">❌ 102</button>
+            <button class="quick-btn" data-code="222">⚙️ 222</button>
+        </div>
+    </div>
+
+    <div class="dev-panel" id="devPanel">
+        <div class="dev-title">🛠️ 开发者反馈区 (仅代码可见)</div>
+        <div class="dev-content" id="devContent"></div>
+    </div>
+
+    <div class="footer-note">
+        💡 提示: 容量与阈值均隐藏，通过水位和警告判断风险。开发者代码显示具体数据。
+    </div>
+</div>
+
+<script>
+    // ---------- 游戏核心 ----------
+    let water = 0;           // 当前水量 (ml)
+    let waterx = 100;       // 大水杯容量 (20~300, 随机)
+    let over = 3;           // 溢出额外阈值
+    let waterov = 103;      // 临界溢出线 = waterx + over
+    let fin = false;        // 游戏是否结束
+    let number = 0;         // 倒水次数计数器
+    let backupWaterx = 100; // 用于222取消时的备份
+
+    // DOM 元素
+    const waterFillDiv = document.getElementById('waterFill');
+    const statusMsgDiv = document.getElementById('statusMsg');
+    const devPanel = document.getElementById('devPanel');
+    const devContent = document.getElementById('devContent');
+    const cmdInput = document.getElementById('cmdInput');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function updateWaterFill() {
+        let percent = 0;
+        if (waterx > 0) {
+            percent = (water / waterx) * 100;
+            if (percent > 100) percent = 100;
+            if (percent < 0) percent = 0;
+        }
+        waterFillDiv.style.height = `${percent}%`;
+        if (water >= waterx && !fin) {
+            waterFillDiv.style.background = "linear-gradient(135deg, #e67e22, #c0392b)";
+        } else {
+            waterFillDiv.style.background = "linear-gradient(135deg, #3ba0d9, #1c6ea9)";
+        }
+    }
+
+    function updateStatusMessage(message, isWarning = false, isGameOver = false) {
+        if (isGameOver) {
+            statusMsgDiv.innerHTML = `<span class="danger-text">💀 ${message} 💀</span>`;
+        } else if (isWarning) {
+            statusMsgDiv.innerHTML = `<span class="warning-text">⚠️ ${message} ⚠️</span>`;
+        } else {
+            statusMsgDiv.innerHTML = message;
+        }
+    }
+
+    function refreshMainUI() {
+        updateWaterFill();
+        if (fin) {
+            updateStatusMessage("❌ 水已溢出！游戏结束。输入103重开或使用开发者代码 ❌", false, true);
+            return;
+        }
+        let percent = (water / waterx) * 100;
+        percent = Math.min(percent, 100);
+        if (water >= waterx && water <= waterov) {
+            updateStatusMessage("💦 水位已满！再加任意水就会溢出！请谨慎！", true);
+        } 
+        else if (water < waterx && percent >= 98) {
+            updateStatusMessage("🔥 水位极高！即将溢出警告！ 再倒水极可能失败 🔥", true);
+        }
+        else if (water < waterx) {
+            let displayPercent = percent.toFixed(1);
+            updateStatusMessage(`💧 当前水位 ≈ ${displayPercent}% · 安全`, false);
+        } 
+        else {
+            updateStatusMessage("⚠️ 异常状态，请谨慎倒水", true);
+        }
+    }
+
+    function showDevMessage(msg, isError = false) {
+        devPanel.style.display = "block";
+        const msgLine = document.createElement('div');
+        msgLine.style.marginBottom = "6px";
+        msgLine.style.borderBottom = "1px solid #5e7a70";
+        msgLine.style.padding = "4px 0";
+        msgLine.style.color = isError ? "#f9a78b" : "#c2e0ff";
+        msgLine.innerHTML = isError ? `⚠️ ${msg}` : `🔧 ${msg}`;
+        devContent.appendChild(msgLine);
+        devContent.scrollTop = devContent.scrollHeight;
+        while (devContent.children.length > 30) devContent.removeChild(devContent.firstChild);
+    }
+
+    function hideAndClearDevPanel() {
+        devPanel.style.display = "none";
+        devContent.innerHTML = "";
+    }
+
+    function resetGameState() {
+        const newWaterx = Math.floor(Math.random() * (300 - 20 + 1) + 20);
+        waterx = newWaterx;
+        if (waterx <= 100) {
+            over = Math.floor(Math.random() * 3) + 1;
+        } else {
+            over = Math.floor(Math.random() * 4) + 4;
+        }
+        waterov = waterx + over;
+        water = 0;
+        fin = false;
+        number = 0;
+        backupWaterx = waterx;
+        refreshMainUI();
+    }
+
+    function restartGame() {
+        resetGameState();
+        hideAndClearDevPanel();
+        updateStatusMessage("🔄 游戏已重开！新的大水杯，未知容量。开始倒水吧~", false);
+    }
+
+    function forceEndGame() {
+        if (fin) {
+            showDevMessage("游戏已经处于结束状态，可使用103重开", false);
+            return;
+        }
+        fin = true;
+        refreshMainUI();
+        updateStatusMessage("⛔ 强制结束游戏 (代码102) 挑战终止 ⛔", false, true);
+        showDevMessage(`强制结束指令102 · 游戏终止，当前水量为 ${water}ml / 临界线 ${waterov}ml`, false);
+    }
+
+    // 101: 显示容量和阈值
+    function showCapacityInfo() {
+        showDevMessage(`📊 [101] 大水杯容量 = ${waterx} ml | 溢出阈值 +${over} ml | 临界水位 = ${waterov} ml`);
+    }
+
+    // 111: 只显示当前水量和占比，不显示临界线
+    function showCurrentWater() {
+        let percent = (water / waterx) * 100;
+        if (fin) {
+            showDevMessage(`[111] 游戏已结束，最终水量: ${water} ml / ${waterx} ml (占比 ${percent.toFixed(2)}%)`);
+        } else {
+            showDevMessage(`[111] 当前水量 = ${water} ml (占比 ${percent.toFixed(2)}%)`);
+        }
+    }
+
+    // 222: 修改容量
+    function handleChangeCapacity() {
+        let newCapInput = prompt("🔧 [开发者222] 输入新的大水杯容量 (正整数, 输入 -9 取消修改):", waterx);
+        if (newCapInput === null) {
+            showDevMessage("222指令已取消", false);
+            return;
+        }
+        let parsed = Number(newCapInput);
+        if (newCapInput === "-9") {
+            waterx = backupWaterx;
+            waterov = waterx + over;
+            water = 0;
+            fin = false;
+            number = 0;
+            refreshMainUI();
+            showDevMessage(`222终止代码，容量恢复为 ${waterx} ml，游戏状态重置 (水量归零)`);
+            updateStatusMessage(`⚙️ 容量恢复，游戏重置`, false);
+            hideAndClearDevPanel();
+            return;
+        }
+        if (isNaN(parsed) || parsed <= 0 || !Number.isInteger(parsed)) {
+            showDevMessage(`无效容量！必须输入大于0的整数。修改失败`, true);
+            return;
+        }
+        waterx = parsed;
+        waterov = waterx + over;
+        water = 0;
+        fin = false;
+        number = 0;
+        backupWaterx = waterx;
+        refreshMainUI();
+        showDevMessage(`222修改成功: 大水杯容量 → ${waterx} ml (阈值不变 ${over}, 新临界水位 ${waterov})，水量已归零`);
+        updateStatusMessage(`⚙️ 水杯容量已改变，重新开始`, false);
+        hideAndClearDevPanel();
+    }
+
+    // 倒水逻辑
+    function pourWater(amount) {
+        if (fin) {
+            updateStatusMessage("游戏已结束，无法倒水！请按103重开或使用开发者代码222重置", true);
+            showDevMessage(`倒水失败: 游戏已结束`, true);
+            return false;
+        }
+        if (amount < 1 || amount > 50) {
+            updateStatusMessage(`无效倒水量 (${amount})，请输入1~50之间的整数`, true);
+            showDevMessage(`倒水值无效: ${amount} (需1-50)`, true);
+            return false;
+        }
+
+        number++;
+        let oldWater = water;
+        water = water + amount;
+
+        // 第一次特殊保护
+        if (number === 1 && waterx < 51 && water > waterx) {
+            water = waterx;
+            refreshMainUI();
+            updateStatusMessage(`⚠️ 初次倒水触发了保护！水杯刚好注满，未溢出。但下次需谨慎！`, true);
+            showDevMessage(`特殊机制: 初次倒水且容量<51ml，强制注满至${water}ml (未溢出)`);
+            return true;
+        }
+
+        // 溢出判定
+        if (water > waterov) {
+            fin = true;
+            refreshMainUI();
+            updateStatusMessage(`💥 糟糕！倒入 ${amount} 后水溢出了！游戏结束 💥`, true, true);
+            // 优化反馈文本：避免“判定失败”歧义，直接说明游戏失败及原因
+            showDevMessage(`游戏失败：水已溢出 (水量 ${water}ml > 临界水位 ${waterov}ml，倒入了${amount}ml)`, true);
+            return false;
+        }
+
+        // 未溢出，正常反馈
+        refreshMainUI();
+        let percent = (water / waterx) * 100;
+        if (water >= waterx) {
+            updateStatusMessage(`⚠️ 倒入 ${amount} 后水位已达满杯边缘！再加就会溢出！`, true);
+        } else if (percent >= 98) {
+            updateStatusMessage(`🔥 倒入 ${amount} 后水位极高 (${percent.toFixed(1)}%)，再倒极可能失败！`, true);
+        } else {
+            updateStatusMessage(`✅ 倒入 ${amount} ml · 当前水位约 ${percent.toFixed(1)}%`, false);
+        }
+        showDevMessage(`倒水 ${amount}ml → 水量 ${water}ml (占比${percent.toFixed(2)}%)`, false);
+        return true;
+    }
+
+    // 统一输入处理
+    function processInput(raw) {
+        if (raw === null || raw.trim() === "") {
+            updateStatusMessage("输入为空，请输入数字指令", true);
+            return;
+        }
+        let trimmed = raw.trim();
+        let num = Number(trimmed);
+        if (!isNaN(num) && Number.isInteger(num)) {
+            switch (num) {
+                case 101: showCapacityInfo(); break;
+                case 102: forceEndGame(); break;
+                case 103: restartGame(); break;
+                case 111: showCurrentWater(); break;
+                case 222: handleChangeCapacity(); break;
+                default:
+                    if (num >= 1 && num <= 50) {
+                        pourWater(num);
+                    } else {
+                        updateStatusMessage(`无效指令: ${num} 不是1-50或有效代码(101,102,103,111,222)`, true);
+                        showDevMessage(`无法识别指令: ${num}`, true);
+                    }
+                    break;
+            }
+        } else {
+            updateStatusMessage(`无效输入: "${trimmed}" 请输入数字代码或倒水量`, true);
+            showDevMessage(`格式错误: 仅支持整数`, true);
+        }
+        cmdInput.value = "";
+    }
+
+    function bindQuickButtons() {
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const code = btn.getAttribute('data-code');
+                if (code) {
+                    cmdInput.value = code;
+                    processInput(code);
+                }
+            });
+        });
+    }
+
+    function bindEvents() {
+        submitBtn.addEventListener('click', () => {
+            processInput(cmdInput.value);
+        });
+        cmdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                processInput(cmdInput.value);
+            }
+        });
+    }
+
+    function init() {
+        resetGameState();
+        hideAndClearDevPanel();
+        updateStatusMessage("🎲 新对局！大水杯容量未知，凭感觉倒水，溢出则败。输入1~50", false);
+        bindQuickButtons();
+        bindEvents();
+    }
+
+    init();
+</script>
+</body>
+</html>
