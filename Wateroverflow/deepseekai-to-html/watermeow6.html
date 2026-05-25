@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>倒水挑战 · 初始水量版 | 凌柃</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        /* ---------- 全局主题变量 ---------- */
+        :root {
+            --bg-gradient-start: #1a6d7a;
+            --bg-gradient-end: #0e4b55;
+            --container-bg: rgba(245, 245, 235, 0.96);
+            --header-bg: #2c3e2f;
+            --header-text: #f9e7c2;
+            --border-color: #e0a82b;
+            --cup-bg: #b4c8b0;
+            --cup-inner: #e0e7d6;
+            --status-bg: #fef0cf;
+            --status-text: #9b4b2c;
+            --input-bg: #fff8e7;
+            --btn-primary-bg: #2c7a47;
+            --btn-primary-shadow: #14532d;
+            --quick-btn-bg: #3b5e6b;
+            --dev-panel-bg: #1e2a2f;
+            --dev-title-bg: #00000066;
+            --dev-text: #d6f0ff;
+            --footer-bg: #e5dbbd;
+            --shadow-color: rgba(0,0,0,0.2);
+            --border-radius-card: 20px;
+            --border-radius-element: 28px;
+        }
+
+        /* 主题配色 */
+        body.theme-pink {
+            --bg-gradient-start: #f5a3b9;
+            --bg-gradient-end: #e77f9a;
+            --container-bg: #fff5f7;
+            --header-bg: #d9708a;
+            --header-text: #fff0f2;
+            --border-color: #f8b0c2;
+            --cup-bg: #fce4ea;
+            --cup-inner: #fff0f3;
+            --status-bg: #fff0f3;
+            --status-text: #b3415e;
+            --input-bg: #fffafc;
+            --btn-primary-bg: #e6678b;
+            --btn-primary-shadow: #b34e6a;
+            --quick-btn-bg: #d985a1;
+            --dev-panel-bg: #2a1f24;
+            --dev-title-bg: #5a3a45;
+            --dev-text: #ffe0e7;
+            --footer-bg: #fce4ea;
+        }
+        body.theme-orange {
+            --bg-gradient-start: #e67e22;
+            --bg-gradient-end: #b85e0a;
+            --container-bg: #fff3e6;
+            --header-bg: #c45c0c;
+            --header-text: #fff0d0;
+            --border-color: #f39c12;
+            --cup-bg: #f9e0b0;
+            --cup-inner: #ffefcf;
+            --status-bg: #fff4e0;
+            --status-text: #b85e0a;
+            --input-bg: #fffaf0;
+            --btn-primary-bg: #e67e22;
+            --btn-primary-shadow: #aa5a0a;
+            --quick-btn-bg: #e67e22;
+            --dev-panel-bg: #2f2418;
+            --dev-title-bg: #5c3e1a;
+            --dev-text: #ffe2b5;
+            --footer-bg: #f7e5ce;
+        }
+        body.theme-blue {
+            --bg-gradient-start: #9ac4de;
+            --bg-gradient-end: #7aa9c9;
+            --container-bg: #f0f8ff;
+            --header-bg: #5a9bc0;
+            --header-text: #ffffff;
+            --border-color: #8ab3cf;
+            --cup-bg: #d9eaf5;
+            --cup-inner: #eef6fc;
+            --status-bg: #e6f2fa;
+            --status-text: #2c6e9e;
+            --input-bg: #f5faff;
+            --btn-primary-bg: #5dade2;
+            --btn-primary-shadow: #2c6e9e;
+            --quick-btn-bg: #7fb3d5;
+            --dev-panel-bg: #1e3a4a;
+            --dev-title-bg: #0a2a38;
+            --dev-text: #c9e9ff;
+            --footer-bg: #e1f0f8;
+        }
+        body.theme-white {
+            --bg-gradient-start: #e0e0e0;
+            --bg-gradient-end: #c0c0c0;
+            --container-bg: #ffffff;
+            --header-bg: #2c3e50;
+            --header-text: #ffffff;
+            --border-color: #b0bec5;
+            --cup-bg: #eceff1;
+            --cup-inner: #ffffff;
+            --status-bg: #f5f5f5;
+            --status-text: #424242;
+            --input-bg: #fafafa;
+            --btn-primary-bg: #2196f3;
+            --btn-primary-shadow: #0b5e9e;
+            --quick-btn-bg: #90a4ae;
+            --dev-panel-bg: #37474f;
+            --dev-title-bg: #263238;
+            --dev-text: #e0f2f1;
+            --footer-bg: #eeeeee;
+        }
+        body.theme-dark {
+            --bg-gradient-start: #1e1e2f;
+            --bg-gradient-end: #12121a;
+            --container-bg: #2d2d3a;
+            --header-bg: #1f1f2e;
+            --header-text: #e0e0e0;
+            --border-color: #f39c12;
+            --cup-bg: #3a3a4a;
+            --cup-inner: #2a2a38;
+            --status-bg: #3e3e50;
+            --status-text: #f0c674;
+            --input-bg: #4a4a5a;
+            --btn-primary-bg: #f39c12;
+            --btn-primary-shadow: #b87a0a;
+            --quick-btn-bg: #5a5a70;
+            --dev-panel-bg: #1e1e2a;
+            --dev-title-bg: #0a0a12;
+            --dev-text: #c7d9e5;
+            --footer-bg: #252530;
+            color: #eee;
+        }
+
+        body {
+            background: linear-gradient(145deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Roboto', 'Poppins', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .game-container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--container-bg);
+            border-radius: var(--border-radius-card);
+            box-shadow: 0 25px 40px var(--shadow-color), inset 0 1px 2px rgba(255,255,255,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-header {
+            background: var(--header-bg);
+            padding: 16px 20px 12px;
+            text-align: center;
+            color: var(--header-text);
+            border-bottom: 4px solid var(--border-color);
+            position: relative;
+        }
+        .game-header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+        }
+        .theme-bar {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .theme-btn {
+            background: rgba(0,0,0,0.3);
+            border: none;
+            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* 水杯 */
+        .cup-visual {
+            background: var(--cup-bg);
+            margin: 20px auto 5px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: inset 0 0 0 3px var(--border-color), 0 8px 15px rgba(0,0,0,0.2);
+            width: 60%;
+        }
+        .cup-shape {
+            background: var(--cup-inner);
+            height: 200px;
+            border-radius: 0 0 28px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .water-fill {
+            background: linear-gradient(135deg, #3ba0d9, #1c6ea9);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            transition: height 0.2s ease;
+            height: 0%;
+            border-radius: 0 0 28px 28px;
+        }
+
+        /* 独立水量显示开关 */
+        .water-toggle-area {
+            margin: 10px auto 0;
+            width: 60%;
+            text-align: center;
+        }
+        .toggle-water-btn {
+            background: var(--btn-primary-bg);
+            border: none;
+            border-radius: 40px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        .water-info-panel {
+            background: var(--status-bg);
+            border-radius: 20px;
+            padding: 6px 10px;
+            margin-top: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--status-text);
+            display: none;
+            justify-content: space-between;
+        }
+        .water-info-panel.show {
+            display: flex;
+        }
+
+        /* 状态区域 */
+        .status-area {
+            background: var(--status-bg);
+            margin: 15px 20px 0px;
+            border-radius: var(--border-radius-element);
+            padding: 12px 16px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--status-text);
+            min-height: 85px;
+        }
+
+        /* 滑块 */
+        .slider-area {
+            margin: 12px 20px;
+            background: rgba(0,0,0,0.05);
+            border-radius: var(--border-radius-element);
+            padding: 12px;
+        }
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .slider-group label {
+            font-weight: bold;
+            font-size: 0.8rem;
+            width: 70px;
+        }
+        input[type="range"] {
+            flex: 2;
+            min-width: 150px;
+            height: 6px;
+            border-radius: 10px;
+            background: var(--border-color);
+        }
+        .slider-value {
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .total-value {
+            background: var(--btn-primary-bg);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 6px;
+        }
+        .btn-slider-submit {
+            background: var(--btn-primary-bg);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 16px;
+            color: white;
+            font-weight: bold;
+            margin-top: 8px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* 手动输入 */
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin: 10px 20px;
+        }
+        .input-group input {
+            flex: 3;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: none;
+            border-radius: var(--border-radius-element);
+            background: var(--input-bg);
+            font-weight: bold;
+            text-align: center;
+            outline: none;
+        }
+        .input-group button {
+            flex: 1;
+            background: var(--btn-primary-bg);
+            border: none;
+            border-radius: var(--border-radius-element);
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 3px 0 var(--btn-primary-shadow);
+        }
+        .input-group button:active { transform: translateY(2px); }
+
+        /* 功能按钮区域 */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 12px 20px;
+        }
+        .action-btn {
+            background: var(--quick-btn-bg);
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            border-radius: 40px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            min-width: 90px;
+        }
+
+        /* 上帝视角卡片 */
+        .god-card {
+            background: var(--dev-panel-bg);
+            border-radius: var(--border-radius-element);
+            overflow: hidden;
+            display: none;
+            border-left: 6px solid #ffb347;
+            margin: 12px 20px;
+        }
+        .god-card-header {
+            background: var(--dev-title-bg);
+            padding: 8px 16px;
+            font-weight: bold;
+            color: #ffd966;
+            font-size: 0.8rem;
+        }
+        .god-card-content {
+            padding: 10px 16px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--dev-text);
+        }
+        .god-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,200,0.2);
+        }
+
+        /* 游戏日志 */
+        .game-log {
+            background: var(--status-bg);
+            border-radius: var(--border-radius-element);
+            overflow: hidden;
+            max-height: 140px;
+            margin: 12px 20px;
+        }
+        .log-title {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 6px 16px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .log-content {
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            overflow-y: auto;
+            max-height: 100px;
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* 游戏结束弹窗 */
+        .gameover-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.2s, opacity 0.2s;
+        }
+        .gameover-modal.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background: var(--container-bg);
+            border-radius: 28px;
+            padding: 24px 28px;
+            text-align: center;
+            max-width: 280px;
+            width: 80%;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.4);
+            color: var(--status-text);
+        }
+        .modal-content h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.5rem;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .modal-btn {
+            background: var(--btn-primary-bg);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+        .modal-btn.close {
+            background: #888;
+        }
+
+        .keep-switch {
+            margin: 10px 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            font-size: 0.7rem;
+        }
+        .keep-switch input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .help-section {
+            margin: 8px 20px 16px;
+        }
+        .help-toggle {
+            background: var(--quick-btn-bg);
+            border: none;
+            border-radius: 40px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+        .help-content {
+            background: var(--container-bg);
+            border-radius: var(--border-radius-element);
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+        .help-content.show {
+            display: block;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.65rem;
+            padding: 8px;
+            background: var(--footer-bg);
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <div class="game-header">
+        <h1>💧 倒水挑战 · 初始水量版 💧</h1>
+        <div class="theme-bar">
+            <button class="theme-btn" data-theme="default">默认</button>
+            <button class="theme-btn" data-theme="pink">🌸 粉</button>
+            <button class="theme-btn" data-theme="orange">🍊 橙</button>
+            <button class="theme-btn" data-theme="blue">💙 蓝</button>
+            <button class="theme-btn" data-theme="white">☀️ 亮白</button>
+            <button class="theme-btn" data-theme="dark">🌙 暗黑</button>
+        </div>
+    </div>
+
+    <div class="cup-visual">
+        <div class="cup-shape">
+            <div class="water-fill" id="waterFill"></div>
+        </div>
+    </div>
+
+    <!-- 独立水量显示开关 -->
+    <div class="water-toggle-area">
+        <button class="toggle-water-btn" id="toggleWaterBtn">💧 显示当前水量</button>
+        <div class="water-info-panel" id="waterInfoPanel">
+            <div class="water-info-item">💧 水量: <span id="infoWater">0</span> ml</div>
+            <div class="water-info-item">📊 占比: <span id="infoPercent">0</span>%</div>
+        </div>
+    </div>
+
+    <div class="status-area" id="statusMsg"></div>
+
+    <!-- 滑块区域 -->
+    <div class="slider-area">
+        <div class="slider-group">
+            <label>🔧 微调 (0-9)</label>
+            <input type="range" id="sliderFine" min="0" max="9" step="1" value="1">
+            <span class="slider-value" id="fineValue">1</span>
+        </div>
+        <div class="slider-group">
+            <label>⚡ 粗调 (0-50/10)</label>
+            <input type="range" id="sliderCoarse" min="0" max="50" step="10" value="0">
+            <span class="slider-value" id="coarseValue">0</span>
+        </div>
+        <div class="total-value" id="totalAmount">总倒水量: 1 ml</div>
+        <button class="btn-slider-submit" id="sliderSubmitBtn">💧 用当前合计水量倒水</button>
+    </div>
+
+    <!-- 手动输入倒水 -->
+    <div class="input-group">
+        <input type="number" id="cmdInput" placeholder="输入 1~50 直接倒水" value="">
+        <button id="submitBtn">⏎ 倒水</button>
+    </div>
+
+    <!-- 功能按钮 -->
+    <div class="action-buttons">
+        <button class="action-btn" id="godViewBtn">👁️ 上帝视角</button>
+        <button class="action-btn" id="forceEndBtn">💀 强制结束</button>
+        <button class="action-btn" id="nextRoundBtn">🔄 下一局</button>
+        <button class="action-btn" id="customWaterBtn">⚙️ 自定义水量</button>
+    </div>
+
+    <!-- 上帝视角反馈卡片 -->
+    <div class="god-card" id="godCard">
+        <div class="god-card-header">👁️ 上帝视角 · 全数值</div>
+        <div class="god-card-content">
+            <div class="god-line"><span>🏺 大水杯容量</span><span id="godCapacity">--</span></div>
+            <div class="god-line"><span>⚠️ 溢出阈值</span><span id="godOver">--</span></div>
+            <div class="god-line"><span>💧 临界水位</span><span id="godLimit">--</span></div>
+            <div class="god-line"><span>💧 当前水量</span><span id="godWater">--</span></div>
+            <div class="god-line"><span>📊 当前占比</span><span id="godPercent">--</span></div>
+        </div>
+    </div>
+
+    <!-- 游戏日志 -->
+    <div class="game-log">
+        <div class="log-title">📜 游戏日志</div>
+        <div class="log-content" id="gameLogArea"></div>
+    </div>
+
+    <!-- 保持显示开关 -->
+    <div class="keep-switch">
+        <label for="keepModalCheck">🔘 保持显示结束提示</label>
+        <input type="checkbox" id="keepModalCheck">
+    </div>
+
+    <!-- 游戏结束弹窗 -->
+    <div id="gameoverModal" class="gameover-modal">
+        <div class="modal-content">
+            <h3>💀 游戏结束 💀</h3>
+            <p>水溢出了！挑战失败</p>
+            <div class="modal-buttons">
+                <button class="modal-btn" id="modalNextBtn">下一局</button>
+                <button class="modal-btn close" id="modalCloseBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="help-section">
+        <button class="help-toggle" id="helpToggleBtn">📖 游戏说明 & 功能指南 ▼</button>
+        <div class="help-content" id="helpContent">
+            <strong>🎯 游戏目标：</strong> 大水杯初始已有随机水量 (0~80%容量)，用小水杯(1~50ml)倒水，溢出即败。<br>
+            <strong>💧 倒水方式：</strong> ① 输入框直接输入1-50；② 滑块组合(微调0-9 + 粗调0-50/10)自动求和≤50。<br>
+            <strong>🔘 功能按键：</strong><br>
+            • 👁️ 上帝视角 → 显示容量、阈值、临界水位、当前水量等所有数值。<br>
+            • 💀 强制结束 → 立即终止游戏，弹出失败提示。<br>
+            • 🔄 下一局 → 随时重置游戏，重新随机生成所有参数（含初始水量）。<br>
+            • ⚙️ 自定义水量 → 修改大水杯容量，系统将重新生成溢出阈值和新的初始水量(0~80%)。<br>
+            <strong>💡 其他：</strong> 水杯下方开关可独立显示/隐藏水量百分比；游戏结束时弹窗默认3秒自动消失，勾选“保持显示”后需手动关闭。<br>
+            <strong>🎨 主题切换：</strong> 右上角改变色调，水色保持蓝色。
+        </div>
+    </div>
+    <div class="footer-note">✨ 微调0-9，粗调步长10，粗调50时微调自动归零 ✨</div>
+</div>
+
+<script>
+    // ---------- 游戏核心变量 ----------
+    let water = 0;          // 当前水量 (ml)
+    let waterx = 100;      // 大水杯容量
+    let over = 3;          // 溢出额外阈值
+    let waterov = 103;     // 临界溢出线 = waterx + over
+    let fin = false;       // 游戏是否结束
+    let number = 0;        // 倒水次数计数器
+    let backupWaterx = 100;
+
+    // DOM 元素
+    const waterFillDiv = document.getElementById('waterFill');
+    const statusMsgDiv = document.getElementById('statusMsg');
+    const gameLogArea = document.getElementById('gameLogArea');
+    const cmdInput = document.getElementById('cmdInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const sliderFine = document.getElementById('sliderFine');
+    const sliderCoarse = document.getElementById('sliderCoarse');
+    const fineValue = document.getElementById('fineValue');
+    const coarseValue = document.getElementById('coarseValue');
+    const totalAmountSpan = document.getElementById('totalAmount');
+    const sliderSubmitBtn = document.getElementById('sliderSubmitBtn');
+    const toggleWaterBtn = document.getElementById('toggleWaterBtn');
+    const waterInfoPanel = document.getElementById('waterInfoPanel');
+    const infoWaterSpan = document.getElementById('infoWater');
+    const infoPercentSpan = document.getElementById('infoPercent');
+    const godCard = document.getElementById('godCard');
+    const godCapacity = document.getElementById('godCapacity');
+    const godOver = document.getElementById('godOver');
+    const godLimit = document.getElementById('godLimit');
+    const godWater = document.getElementById('godWater');
+    const godPercent = document.getElementById('godPercent');
+
+    // 弹窗相关
+    const modal = document.getElementById('gameoverModal');
+    const keepModalCheck = document.getElementById('keepModalCheck');
+    let modalTimer = null;
+
+    // 辅助函数：计算百分比 (保留两位)
+    function calcPercent(water, waterx) {
+        if (waterx === 0) return 0;
+        return (water / waterx) * 100;
+    }
+
+    // 生成随机初始水量 (0 ~ waterx * 0.8)
+    function generateInitialWater(capacity) {
+        let maxInit = Math.floor(capacity * 0.8);
+        if (maxInit < 0) maxInit = 0;
+        return Math.floor(Math.random() * (maxInit + 1));
+    }
+
+    // 根据容量生成溢出阈值
+    function generateOverflow(capacity) {
+        if (capacity <= 100) {
+            return Math.floor(Math.random() * 3) + 1;   // 1-3
+        } else {
+            return Math.floor(Math.random() * 4) + 4;   // 4-7
+        }
+    }
+
+    // 完全重置游戏 (随机容量、阈值、初始水量) —— 日志不暴露具体参数
+    function resetGameState() {
+        waterx = Math.floor(Math.random() * (300 - 20 + 1) + 20);
+        over = generateOverflow(waterx);
+        waterov = waterx + over;
+        water = generateInitialWater(waterx);
+        fin = false;
+        number = 0;
+        backupWaterx = waterx;
+        refreshMainUI();
+        // 只输出通用消息，不暴露任何具体数值
+        addGameLog(`✨ 新对局已开始，大水杯已有随机初始水量 ✨`);
+    }
+
+    // 下一局（外部调用）
+    function nextRound() {
+        resetGameState();
+        hideGodView();
+        hideGameOverModal();
+        let percent = calcPercent(water, waterx);
+        updateStatusMessage(`🔄 下一局！初始水量 ${percent.toFixed(1)}%`, false);
+    }
+
+    // 强制结束游戏
+    function forceEndGame() {
+        if (fin) {
+            addGameLog("游戏已经结束，无需强制结束");
+            return;
+        }
+        fin = true;
+        refreshMainUI();
+        updateStatusMessage("⛔ 强制结束游戏", false, true);
+        addGameLog(`强制结束游戏`);
+        showGameOverModal();
+    }
+
+    // 自定义水量模式（类似原222代码）—— 仅显示用户设置的容量值，不暴露其他参数
+    function customWaterCapacity() {
+        let newCapInput = prompt("自定义水量模式：输入新的大水杯容量 (正整数, -9取消):", waterx);
+        if (newCapInput === null) return;
+        if (newCapInput === "-9") {
+            waterx = backupWaterx;
+            over = generateOverflow(waterx);
+            waterov = waterx + over;
+            water = generateInitialWater(waterx);
+            fin = false;
+            number = 0;
+            refreshMainUI();
+            addGameLog(`取消自定义，水杯容量已恢复`);
+            hideGodView();
+            return;
+        }
+        let cap = Number(newCapInput);
+        if (isNaN(cap) || cap <= 0 || !Number.isInteger(cap)) {
+            alert("无效容量，必须输入正整数");
+            return;
+        }
+        waterx = cap;
+        over = generateOverflow(waterx);
+        waterov = waterx + over;
+        water = generateInitialWater(waterx);
+        fin = false;
+        number = 0;
+        backupWaterx = waterx;
+        refreshMainUI();
+        // 只显示用户设置的容量值，不曝光阈值、临界水位和具体初始水量
+        addGameLog(`⚙️ 自定义容量为 ${waterx} ml，初始水量已更新`);
+        hideGodView();
+        let percent = calcPercent(water, waterx);
+        updateStatusMessage(`⚙️ 容量已改为 ${waterx}ml，初始水量 ${percent.toFixed(1)}%`, false);
+    }
+
+    // 上帝视角显示
+    function updateGodCard() {
+        godCapacity.innerText = waterx + ' ml';
+        godOver.innerText = over + ' ml';
+        godLimit.innerText = waterov + ' ml';
+        godWater.innerText = water + ' ml';
+        godPercent.innerText = calcPercent(water, waterx).toFixed(2) + '%';
+    }
+    function showGodView() {
+        updateGodCard();
+        godCard.style.display = 'block';
+        addGameLog(`[上帝视角] 容量:${waterx}ml 阈值:${over}ml 临界:${waterov}ml 水量:${water}ml (${calcPercent(water, waterx).toFixed(2)}%)`);
+    }
+    function hideGodView() {
+        godCard.style.display = 'none';
+    }
+
+    // 日志和UI更新
+    function addGameLog(msg) {
+        const p = document.createElement('div');
+        p.innerHTML = `📢 ${msg}`;
+        p.style.marginBottom = '4px';
+        p.style.fontSize = '0.7rem';
+        gameLogArea.appendChild(p);
+        gameLogArea.scrollTop = gameLogArea.scrollHeight;
+        while (gameLogArea.children.length > 30) gameLogArea.removeChild(gameLogArea.firstChild);
+    }
+
+    function updateWaterFill() {
+        let percent = waterx > 0 ? (water / waterx) * 100 : 0;
+        if (percent > 100) percent = 100;
+        waterFillDiv.style.height = `${percent}%`;
+    }
+
+    function updateStatusMessage(msg, isWarning = false, isGameOver = false) {
+        if (isGameOver) statusMsgDiv.innerHTML = `<span style="color:#a5260c;">💀 ${msg} 💀</span>`;
+        else if (isWarning) statusMsgDiv.innerHTML = `<span style="color:#d35400;">⚠️ ${msg} ⚠️</span>`;
+        else statusMsgDiv.innerHTML = msg;
+    }
+
+    function updateWaterInfoPanel() {
+        let percent = calcPercent(water, waterx);
+        infoWaterSpan.innerText = water;
+        infoPercentSpan.innerText = percent.toFixed(1);
+    }
+
+    function refreshMainUI() {
+        updateWaterFill();
+        if (fin) {
+            updateStatusMessage("❌ 水已溢出！游戏结束。点击「下一局」重开 ❌", false, true);
+            if (waterInfoPanel.classList.contains('show')) updateWaterInfoPanel();
+            return;
+        }
+        let percent = calcPercent(water, waterx);
+        percent = Math.min(percent, 100);
+        if (water >= waterx && water <= waterov) {
+            updateStatusMessage("💦 水位已满！再加任意水就会溢出！请谨慎！", true);
+        } else if (water < waterx && percent >= 98) {
+            updateStatusMessage("🔥 水位极高！即将溢出警告！ 再倒水极可能失败 🔥", true);
+        } else if (water < waterx) {
+            updateStatusMessage(`💧 当前水位 ≈ ${percent.toFixed(1)}% · 安全`, false);
+        } else {
+            updateStatusMessage("⚠️ 异常状态，请谨慎倒水", true);
+        }
+        if (waterInfoPanel.classList.contains('show')) updateWaterInfoPanel();
+        if (godCard.style.display === 'block') updateGodCard();
+    }
+
+    // 游戏结束弹窗控制
+    function showGameOverModal() {
+        if (modalTimer) clearTimeout(modalTimer);
+        modal.classList.add('show');
+        if (!keepModalCheck.checked) {
+            modalTimer = setTimeout(() => {
+                modal.classList.remove('show');
+            }, 3000);
+        }
+    }
+    function hideGameOverModal() {
+        if (modalTimer) clearTimeout(modalTimer);
+        modal.classList.remove('show');
+    }
+
+    // 倒水核心逻辑
+    function pourWater(amount) {
+        if (fin) {
+            updateStatusMessage("游戏已结束，无法倒水！请点击「下一局」", true);
+            return false;
+        }
+        if (amount < 1 || amount > 50) {
+            updateStatusMessage(`无效倒水量 ${amount}，请输入1~50`, true);
+            return false;
+        }
+        number++;
+        let oldWater = water;
+        water += amount;
+
+        // 第一次倒水保护 (容量<51且加水后超过容量)
+        if (number === 1 && waterx < 51 && water > waterx) {
+            water = waterx;
+            refreshMainUI();
+            updateStatusMessage("⚠️ 初次注满保护！未溢出但已满", true);
+            addGameLog(`初次保护: 水杯注满至${water}ml`);
+            return true;
+        }
+
+        if (water > waterov) {
+            fin = true;
+            refreshMainUI();
+            updateStatusMessage(`💥 倒入 ${amount} 后水溢出了！游戏结束`, true, true);
+            addGameLog(`失败: 倒入${amount}ml，总水量超过临界值`);
+            showGameOverModal();
+            return false;
+        }
+
+        refreshMainUI();
+        let percent = calcPercent(water, waterx);
+        addGameLog(`倒水 +${amount}ml → ${water}ml (${percent.toFixed(1)}%)`);
+        if (water >= waterx) {
+            updateStatusMessage(`⚠️ 倒入 ${amount} 后水位已达满杯边缘！`, true);
+        } else if (percent >= 98) {
+            updateStatusMessage(`🔥 倒入 ${amount} 后水位极高 (${percent.toFixed(1)}%)！`, true);
+        } else {
+            updateStatusMessage(`✅ 倒入 ${amount}ml · 当前水位约 ${percent.toFixed(1)}%`, false);
+        }
+        if (godCard.style.display === 'block') updateGodCard();
+        return true;
+    }
+
+    // 滑块逻辑
+    function updateSliderTotal() {
+        let coarse = parseInt(sliderCoarse.value);
+        let fine = parseInt(sliderFine.value);
+        if (coarse === 50) {
+            sliderFine.value = 0;
+            sliderFine.disabled = true;
+            fineValue.innerText = '0';
+            totalAmountSpan.innerText = `总倒水量: 50 ml (粗调最大)`;
+            return 50;
+        } else {
+            sliderFine.disabled = false;
+            let total = coarse + fine;
+            if (total > 50) {
+                let newFine = 50 - coarse;
+                if (newFine < 0) newFine = 0;
+                sliderFine.value = newFine;
+                fine = newFine;
+            }
+            fineValue.innerText = fine;
+            totalAmountSpan.innerText = `总倒水量: ${coarse + fine} ml`;
+            return coarse + fine;
+        }
+    }
+    sliderFine.addEventListener('input', () => { if (!sliderFine.disabled) updateSliderTotal(); });
+    sliderCoarse.addEventListener('input', () => {
+        let coarse = parseInt(sliderCoarse.value);
+        coarseValue.innerText = coarse;
+        if (coarse === 50) {
+            sliderFine.value = 0;
+            sliderFine.disabled = true;
+            fineValue.innerText = '0';
+            totalAmountSpan.innerText = `总倒水量: 50 ml (粗调最大)`;
+        } else {
+            sliderFine.disabled = false;
+            updateSliderTotal();
+        }
+    });
+    sliderSubmitBtn.addEventListener('click', () => {
+        let coarse = parseInt(sliderCoarse.value);
+        let fine = sliderFine.disabled ? 0 : parseInt(sliderFine.value);
+        let total = coarse + fine;
+        if (total > 50) total = 50;
+        if (total < 1) total = 1;
+        pourWater(total);
+    });
+
+    // 手动输入
+    function processManualInput() {
+        let val = cmdInput.value.trim();
+        if (!val) return;
+        let num = Number(val);
+        if (isNaN(num) || !Number.isInteger(num) || num < 1 || num > 50) {
+            updateStatusMessage(`无效输入: "${val}" 请输入1~50的整数`, true);
+        } else {
+            pourWater(num);
+        }
+        cmdInput.value = '';
+    }
+    submitBtn.addEventListener('click', processManualInput);
+    cmdInput.addEventListener('keypress', e => { if(e.key === 'Enter') processManualInput(); });
+
+    // 功能按钮绑定
+    document.getElementById('godViewBtn').addEventListener('click', showGodView);
+    document.getElementById('forceEndBtn').addEventListener('click', forceEndGame);
+    document.getElementById('nextRoundBtn').addEventListener('click', () => { nextRound(); hideGameOverModal(); });
+    document.getElementById('customWaterBtn').addEventListener('click', customWaterCapacity);
+    document.getElementById('modalNextBtn').addEventListener('click', () => { nextRound(); hideGameOverModal(); });
+    document.getElementById('modalCloseBtn').addEventListener('click', hideGameOverModal);
+
+    // 独立水量显示开关
+    function toggleWaterInfo() {
+        if (waterInfoPanel.classList.contains('show')) {
+            waterInfoPanel.classList.remove('show');
+            toggleWaterBtn.innerText = '💧 显示当前水量';
+        } else {
+            updateWaterInfoPanel();
+            waterInfoPanel.classList.add('show');
+            toggleWaterBtn.innerText = '🔒 隐藏水量';
+        }
+    }
+    toggleWaterBtn.addEventListener('click', toggleWaterInfo);
+
+    // 主题切换
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.getAttribute('data-theme');
+            document.body.className = '';
+            if (theme !== 'default') document.body.classList.add(`theme-${theme}`);
+        });
+    });
+
+    // 折叠说明
+    const helpBtn = document.getElementById('helpToggleBtn');
+    const helpContent = document.getElementById('helpContent');
+    helpBtn.addEventListener('click', () => {
+        helpContent.classList.toggle('show');
+        helpBtn.innerText = helpContent.classList.contains('show') ? '📖 游戏说明 & 功能指南 ▲' : '📖 游戏说明 & 功能指南 ▼';
+    });
+
+    // 初始化
+    function init() {
+        resetGameState();
+        sliderFine.value = 1;
+        sliderCoarse.value = 0;
+        sliderFine.disabled = false;
+        fineValue.innerText = '1';
+        coarseValue.innerText = '0';
+        totalAmountSpan.innerText = '总倒水量: 1 ml';
+        hideGodView();
+        let percent = calcPercent(water, waterx);
+        updateStatusMessage(`✨ 游戏已开始！大水杯初始水量 ${percent.toFixed(1)}% ✨`, false);
+    }
+    init();
+</script>
+</body>
+</html>
