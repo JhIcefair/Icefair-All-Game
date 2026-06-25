@@ -38,57 +38,57 @@
 <details>
     <summary>第一代-点击展开</summary>
 
-    * 具体说明
+* 具体说明
 
-    该版本为纯“猜数字”。
+该版本为纯“猜数字”。
 
-    * 代码解析
+* 代码解析
 
-        - 包含参数
+    - 包含参数
 
-        a：目标随机数
+    a：目标随机数
 
-        b：可变数字
+    b：可变数字
 
-        k：游戏结束后稳定窗口符
+    k：游戏结束后稳定窗口符
 
-        - 工作逻辑
+    - 工作逻辑
 
-        首先生成一个“目标随机数”作为“炸弹”并为参数a赋值，范围1-100。
+    首先生成一个“目标随机数”作为“炸弹”并为参数a赋值，范围1-100。
 
-        然后开始while循环，判断输入的值（赋值给参数b）是否与目标值（参数a）相同，
+    然后开始while循环，判断输入的值（赋值给参数b）是否与目标值（参数a）相同，
 
-        若相同则循环结束，输出结果；
+    若相同则循环结束，输出结果；
 
-        若不同则进行大小判断。
+    若不同则进行大小判断。
 
 </details>
 
 <details>
     <summary>第二代-点击展开</summary>
 
-    g
+g
 
 </details>
 
 <details>
     <summary>第三代-点击展开</summary>
 
-    g
+g
 
 </details>
 
 <details>
     <summary>第四代-点击展开</summary>
 
-    g
+g
 
 </details>
 
 <details>
     <summary>第五代-点击展开</summary>
 
-    g
+g
 
 </details>
 
@@ -113,21 +113,21 @@
 <details>
     <summary>第一代-点击展开</summary>
 
-    g
+g
 
 </details>
 
 <details>
     <summary>第二代-点击展开</summary>
 
-    g
+g
 
 </details>
 
 <details>
     <summary>第三代-点击展开</summary>
 
-    g
+g
 
 </details>
 
@@ -150,7 +150,7 @@
 <details>
     <summary>第一代-点击展开</summary>
 
-    g
+g
 
 </details>
 
