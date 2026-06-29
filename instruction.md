@@ -62,6 +62,23 @@
 
     若不同则进行大小判断。
 
+    - 流程图展示
+ 
+    ```mermaid
+
+    graph TD
+        start([开始]) --> Randa[生成最大值100的随机数a]
+        Randa --> Scanfa[输入数字赋值给b]
+        Scanfa --> Whilea{"b=a"}
+        Whilea -- yes --> End[游戏结束]
+        Whilea -- no --> Ifa{"b>a"}
+        Ifa -- yes --> Printfa[偏大]
+        Ifa -- no --> Printfb[偏小]
+        Printfa --> Scanfa
+        Printfb --> Scanfa
+    
+    ```
+
 </details>
 
 <details>
