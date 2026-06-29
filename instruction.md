@@ -46,21 +46,21 @@
 
     - 包含参数
 
-    a：目标随机数
+    int a：目标随机数
 
-    b：可变数字
+    int b：可变数字
 
-    k：游戏结束后稳定窗口符
+    int k：游戏结束后稳定窗口符
 
     - 工作逻辑
 
-    首先生成一个“目标随机数”作为“炸弹”并为参数a赋值，范围1-100。
+    1、生成一个“目标随机数”作为“炸弹”并为参数a赋值，范围1-100。
 
-    然后开始while循环，判断输入的值（赋值给参数b）是否与目标值（参数a）相同，
+    2、开始while循环，判断输入的值（赋值给参数b）是否与目标值（参数a）相同：
 
-    若相同则循环结束，输出结果；
+        2.1、若相同则循环结束，输出结果；
 
-    若不同则进行大小判断。
+        2.2、若不同则进行大小判断。
 
     - 流程图展示
  
@@ -70,7 +70,7 @@
         start([开始]) --> Randa[生成最大值100的随机数a]
         Randa --> Scanfa[输入数字赋值给b]
         Scanfa --> Whilea{"b=a"}
-        Whilea -- yes --> End[游戏结束]
+        Whilea -- yes --> End([游戏结束])
         Whilea -- no --> Ifa{"b>a"}
         Ifa -- yes --> Printfa[偏大]
         Ifa -- no --> Printfb[偏小]
@@ -84,7 +84,62 @@
 <details>
     <summary>第二代-点击展开</summary>
 
-g
+* 具体说明
+
+该版本为纯“数字炸弹”游戏复刻。
+
+* 更新说明
+
+该版本优化了代码逻辑，新增范围提示功能。
+
+* 代码解析
+
+    - 包含参数
+ 
+    int a：目标随机数
+
+    int b：可变数字
+
+    int max：最大值
+
+    int min：最小值
+
+    int k：游戏结束后稳定窗口符
+
+    - 工作逻辑
+ 
+    1、生成一个“目标随机数”作为“炸弹”并为参数a赋值，范围1-100。
+
+    2、开始do循环，判断输入的值（赋值给参数b）是否与目标值（参数a）相同：
+
+        2.1、若相同则循环结束，输出结果；
+  
+        2.2、若不同则进行大小判断并根据结果为参数max和min赋值以记录范围。
+
+    - 流程图展示
+ 
+    ```mermaid
+
+    graph TD
+        Start([开始]) --> Randa[生成最大值100的随机数a]
+        Randa --> Scanfa[输入数字赋值给b]
+        Scanfa --> Do{"b=a"}
+        Do -- yes --> End([游戏结束])
+        Do -- no --> Ifa{"b>a"}
+        Ifa -- yes --> Printfa[偏大]
+        Ifa -- no --> Printfb[偏小]
+        Printfa --> Ifb{"max>b"}
+        Ifb -- yes --> Max[将b值赋值给max]
+        Ifb --no --> Printfc[输出范围]
+        Max --> Printfc[输出范围]
+        Printfb --> Ifc{"min<b"}
+        Ifc -- yes --> Min[将B值赋值给min]
+        Ifc -- no --> Printfc
+        Min --> Printfc[输出范围]
+        Printfc --> Scanfb[输入数字赋值给b]
+        Scanfb --> Do
+
+    ```
 
 </details>
 
