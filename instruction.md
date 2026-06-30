@@ -230,7 +230,7 @@
         Gscanfb --> Ifmain
         Ifbam == yes ==> Printfbxm[偏大]
         Printfbxm ==> IFbamax{"max>b"}
-        Ifbam == no ==> Printfnx[输出当前范围]
+        IFbamax == no ==> Printfnx[输出当前范围]
         IFbamax == yes ==> Max[将参数b值赋值给参数max]
         Max ==> Printfnx
         Ifbam == no ==> Printfnm[偏小]
