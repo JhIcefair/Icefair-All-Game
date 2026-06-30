@@ -220,7 +220,34 @@
         Ifcc1 == no ==> Ifcc2{触发特殊效果值c2}
         Ifcc2 -- yes --> Randca2[更新炸弹位置在大数字区间内，为参数g赋值2]
         Ifcc2 == no ==> Ifg{"g>0"}
--------------------------------------------------------------------------------------
+        Ifg == no ==> Ifbad{处理一开始接触炸弹不会炸的bug}
+        Ifbad -- yes --> Fend
+        Ifbad == no ==> Ifbam{"b>a"}
+        Ifg -- yse --> Gc[按照同样的逻辑生成新的c1 c2]
+        Gc --> Gifg[g值为1则新范围为1-p，g值为2则新范围为p-100]
+        Gifg --> Gifm[如果最大值和最小值相等，则重新在1-100范围内生成炸弹]
+        Gifm --> Gscanfb[输入数字赋值给参数b]
+        Gscanfb --> Ifmain
+        Ifbam == yes ==> Printfbxm[偏大]
+        Printfbxm ==> IFbamax{"max>b"}
+        Ifbam == no ==> Printfnx[输出当前范围]
+        IFbamax == yes ==> Max[将参数b值赋值给参数max]
+        Max ==> Printfnx
+        Ifbam == no ==> Printfnm[偏小]
+        Printfnm ==> Ifbamin{"min<b"}
+        Ifbamin == yes ==> Min[将参数b值赋值给参数min]
+        Min ==> Printfnx
+        Ifbamin == no ==> Printfnx
+        Printfnx ==> Scanfbw[输入数字赋值给参数b]
+        Scanfbw ==> Ifmain
+        Fend ==> Ifend{"s<6"}
+        Ifend == yes ==> Printfends1[触发者获胜]
+        Ifend == no ==> Printfends2[触发者失败]
+        Printfends1 ==> Scanfk[输入数字赋值给参数k]
+        Printfends2 ==> Scanfk
+        Scanfk ==> Ifk{如果参数k的值为103}
+        Ifk == no ==> End([结束])
+        Ifk == yes ==> Start
 
     ```
 
